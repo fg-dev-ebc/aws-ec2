@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EBC 2025</title>
+    <title>EBC 2026</title>
     <link rel="icon" type="image/x-icon" href="favicon2.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -331,7 +331,6 @@
 
         <!-- Header Content -->
         <div class="max-w-7xl mx-auto px-6 py-12 text-center header-content">
-            <h1 class="text-4xl font-bold text-white mb-4 fade-in">Fundamentos de la Nube</h1>
             <div class="flex gap-4 justify-center flex-wrap" id="badgeContainer">
                 <div class="professor-badge badge-item animate-slide-in-left" style="animation-delay: 0.3s;">
                     Profesor: DAVID SANTIAGO ALARCON GARCIA
@@ -343,31 +342,59 @@
         </div>
     </div>
 
-    <!-- Video Section -->
-    <div class="max-w-7xl mx-auto px-6 py-8">
-        <div class="video-container fade-in" style="animation-delay: 0.4s;">
-            <div class="video-card" id="videoCard">
-                <div class="thumbnail-container" onclick="openVideoModal()">
-                    <!-- Aquí puedes poner la URL de tu thumbnail/miniatura del video -->
-                    <img src="django-expuesto.png" alt="Fundamentos de la Nube" class="video-thumbnail">
-                    <div class="play-button">
-                        <div class="play-button-inner">
-                            <div class="play-icon"></div>
+    <!-- Video Sections -->
+    <div class="max-w-7xl mx-auto px-6 py-8 space-y-12">
+        <section>
+            <h2 class="text-3xl font-bold text-white text-center mb-6 fade-in">Arquitectura en la Nube I</h2>
+            <div class="video-container fade-in" style="animation-delay: 0.3s;">
+                <div class="video-card">
+                    <div class="thumbnail-container" onclick="openVideoModal('insert-rds.mp4')">
+                        <img src="insert-rds.png" alt="Insert RDS - Arquitectura en la Nube I" class="video-thumbnail">
+                        <div class="play-button">
+                            <div class="play-button-inner">
+                                <div class="play-icon"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="p-8">
-                    <div class="marquee-container">
-                        <div class="marquee-content">
-                            <h2 class="marquee-item text-2xl font-semibold text-white">Despliegue de una instancia EC2 con Django accesible desde Internet</h2>
-                            <h2 class="marquee-item text-2xl font-semibold text-white">Despliegue de una instancia EC2 con Django accesible desde Internet</h2>
-                            <h2 class="marquee-item text-2xl font-semibold text-white">Despliegue de una instancia EC2 con Django accesible desde Internet</h2>
-                            <h2 class="marquee-item text-2xl font-semibold text-white">Despliegue de una instancia EC2 con Django accesible desde Internet</h2>
+                    <div class="p-8">
+                        <div class="marquee-container">
+                            <div class="marquee-content">
+                                <h3 class="marquee-item text-2xl font-semibold text-white">Integración serverless de AWS Lambda con Amazon RDS usando Python</h3>
+                                <h3 class="marquee-item text-2xl font-semibold text-white">Integración serverless de AWS Lambda con Amazon RDS usando Python</h3>
+                                <h3 class="marquee-item text-2xl font-semibold text-white">Integración serverless de AWS Lambda con Amazon RDS usando Python</h3>
+                                <h3 class="marquee-item text-2xl font-semibold text-white">Integración serverless de AWS Lambda con Amazon RDS usando Python</h3>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section>
+            <h2 class="text-3xl font-bold text-white text-center mb-6 fade-in">Fundamentos de la Nube</h2>
+            <div class="video-container fade-in" style="animation-delay: 0.4s;">
+                <div class="video-card">
+                    <div class="thumbnail-container" onclick="openVideoModal('punto-extra.mp4')">
+                        <img src="django-expuesto.png" alt="Fundamentos de la Nube" class="video-thumbnail">
+                        <div class="play-button">
+                            <div class="play-button-inner">
+                                <div class="play-icon"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="marquee-container">
+                            <div class="marquee-content">
+                                <h3 class="marquee-item text-2xl font-semibold text-white">Despliegue de una instancia EC2 con Django accesible desde Internet</h3>
+                                <h3 class="marquee-item text-2xl font-semibold text-white">Despliegue de una instancia EC2 con Django accesible desde Internet</h3>
+                                <h3 class="marquee-item text-2xl font-semibold text-white">Despliegue de una instancia EC2 con Django accesible desde Internet</h3>
+                                <h3 class="marquee-item text-2xl font-semibold text-white">Despliegue de una instancia EC2 con Django accesible desde Internet</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     </div> <!-- Close content-wrapper -->
@@ -548,18 +575,14 @@
         new InteractiveGrid(gridSvg, gridPattern);
     </script>
     <script>
-        // Inicializar Vanilla Tilt en el video card
-        const videoCard = document.getElementById('videoCard');
-        VanillaTilt.init(videoCard, {
+        // Inicializar Vanilla Tilt en todas las tarjetas de video
+        VanillaTilt.init(document.querySelectorAll('.video-card'), {
             max: 15,
             scale: 1.02,
             speed: 400,
             glare: true,
             'max-glare': 0.3
         });
-
-        // URL del video - Reemplaza esto con tu URL de video real
-        const VIDEO_URL = 'punto-extra.mp4'; // Cambia esta URL
 
         // Detectar si es dispositivo móvil
         function isMobileDevice() {
@@ -570,12 +593,12 @@
         let mobileVideo = null;
         let closeButton = null;
 
-        function openVideoModal() {
+        function openVideoModal(videoUrl) {
             const modal = document.getElementById('videoModal');
             const frame = document.getElementById('videoFrame');
 
             // Mismo comportamiento para móvil y escritorio
-            frame.src = VIDEO_URL;
+            frame.src = videoUrl;
 
             // En móvil, agregar playsinline para evitar pantalla completa automática
             if (isMobileDevice()) {
