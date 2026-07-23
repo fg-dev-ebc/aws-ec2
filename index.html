@@ -117,16 +117,6 @@
             content: "";
         }
 
-        .masthead::after {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 36%;
-            width: 1px;
-            background: linear-gradient(to bottom, transparent, var(--border));
-            content: "";
-        }
-
         .masthead__rail {
             position: relative;
             z-index: 1;
@@ -163,7 +153,6 @@
 
         .identity:first-child {
             padding-right: 1.5rem;
-            border-right: 1px solid var(--border);
         }
 
         .identity:last-child {
@@ -186,6 +175,7 @@
             display: flex;
             min-width: 0;
             align-items: flex-end;
+            overflow: hidden;
             padding: clamp(2rem, 4vw, 4rem);
             border-right: 1px solid var(--border);
             background: rgba(9, 9, 11, 0.48);
@@ -203,6 +193,8 @@
         }
 
         .project__heading {
+            position: relative;
+            z-index: 1;
             max-width: 9ch;
             margin: 0;
             font-size: clamp(2.75rem, 4.5vw, 5.75rem);
@@ -474,10 +466,6 @@
                 min-height: 15rem;
             }
 
-            .masthead::after {
-                left: 50%;
-            }
-
             .project,
             .project:nth-child(even) {
                 min-height: auto;
@@ -524,10 +512,6 @@
             .masthead::before {
                 top: -5rem;
                 right: -3rem;
-            }
-
-            .masthead::after {
-                display: none;
             }
 
             .masthead__rail {
