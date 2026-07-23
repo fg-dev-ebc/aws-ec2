@@ -472,7 +472,7 @@
                 grid-template-columns: 1fr;
             }
 
-            .project .project__header,
+            .project:nth-child(odd) .project__header,
             .project:nth-child(even) .project__header {
                 grid-column: 1;
                 grid-row: auto;
@@ -482,7 +482,7 @@
                 border-left: 0;
             }
 
-            .project .project__body,
+            .project:nth-child(odd) .project__body,
             .project:nth-child(even) .project__body {
                 grid-column: 1;
                 grid-row: auto;
@@ -534,7 +534,7 @@
                 padding-left: 0;
             }
 
-            .project .project__header,
+            .project:nth-child(odd) .project__header,
             .project:nth-child(even) .project__header {
                 min-height: 14rem;
                 padding: 1.5rem 1rem;
