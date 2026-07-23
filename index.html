@@ -8,6 +8,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        document.documentElement.dataset.theme = localStorage.getItem("ebc-theme") ||
+            (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+    </script>
     <style>
         :root {
             color-scheme: dark;
@@ -18,9 +22,40 @@
             --muted: #8f8f98;
             --border: #27272a;
             --border-strong: #52525b;
+            --ambient: rgba(255, 255, 255, 0.09);
+            --grid-line: rgba(255, 255, 255, 0.025);
+            --frame: rgba(5, 5, 5, 0.72);
+            --header-surface: rgba(9, 9, 11, 0.48);
+            --identity: #c5c5ca;
+            --ring: rgba(255, 255, 255, 0.13);
+            --ring-soft: rgba(255, 255, 255, 0.018);
+            --ring-faint: rgba(255, 255, 255, 0.012);
+            --card-shadow: rgba(0, 0, 0, 0.28);
+            --card-shadow-hover: rgba(0, 0, 0, 0.44);
             --radius: 0.75rem;
             --font-sans: "Geist", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+        }
+
+        :root[data-theme="light"] {
+            color-scheme: light;
+            --background: #f1f1ee;
+            --foreground: #111113;
+            --surface: #fafaf9;
+            --surface-raised: #ffffff;
+            --muted: #66666d;
+            --border: #d5d5d1;
+            --border-strong: #8b8b90;
+            --ambient: rgba(0, 0, 0, 0.07);
+            --grid-line: rgba(0, 0, 0, 0.035);
+            --frame: rgba(241, 241, 238, 0.78);
+            --header-surface: rgba(250, 250, 249, 0.52);
+            --identity: #4f4f56;
+            --ring: rgba(0, 0, 0, 0.14);
+            --ring-soft: rgba(0, 0, 0, 0.025);
+            --ring-faint: rgba(0, 0, 0, 0.016);
+            --card-shadow: rgba(24, 24, 27, 0.12);
+            --card-shadow-hover: rgba(24, 24, 27, 0.2);
         }
 
         *,
@@ -34,18 +69,33 @@
             scroll-behavior: smooth;
         }
 
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation: none;
+            mix-blend-mode: normal;
+        }
+
+        ::view-transition-old(root) {
+            z-index: 1;
+        }
+
+        ::view-transition-new(root) {
+            z-index: 2;
+        }
+
         body {
             min-width: 320px;
             min-height: 100vh;
             margin: 0;
             overflow-x: hidden;
             background:
-                radial-gradient(circle at 82% -8%, rgba(255, 255, 255, 0.09), transparent 27rem),
+                radial-gradient(circle at 82% -8%, var(--ambient), transparent 27rem),
                 var(--background);
             color: var(--foreground);
             font-family: var(--font-sans);
             -webkit-font-smoothing: antialiased;
             text-rendering: optimizeLegibility;
+            transition: background-color 450ms ease, color 450ms ease;
         }
 
         body::before {
@@ -53,8 +103,8 @@
             z-index: -1;
             inset: 0;
             background-image:
-                linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
             background-size: 4rem 4rem;
             content: "";
             pointer-events: none;
@@ -90,7 +140,8 @@
             min-height: 100vh;
             margin-inline: auto;
             border-inline: 1px solid var(--border);
-            background: rgba(5, 5, 5, 0.72);
+            background: var(--frame);
+            transition: background-color 450ms ease, border-color 450ms ease;
         }
 
         .masthead {
@@ -101,20 +152,6 @@
             overflow: hidden;
             padding: clamp(1.25rem, 3.5vw, 3.5rem);
             border-bottom: 1px solid var(--border);
-        }
-
-        .masthead::before {
-            position: absolute;
-            top: clamp(-8rem, -8vw, -3rem);
-            right: clamp(2rem, 12vw, 12rem);
-            width: clamp(12rem, 22vw, 22rem);
-            aspect-ratio: 1;
-            border: 1px solid rgba(255, 255, 255, 0.13);
-            border-radius: 50%;
-            box-shadow:
-                0 0 0 clamp(1.5rem, 3vw, 3rem) rgba(255, 255, 255, 0.018),
-                0 0 0 clamp(3rem, 6vw, 6rem) rgba(255, 255, 255, 0.012);
-            content: "";
         }
 
         .masthead__rail {
@@ -134,13 +171,43 @@
             gap: 0.75rem;
             margin: 0;
             padding: 1rem 0;
-            color: #c5c5ca;
+            color: var(--identity);
             font-family: var(--font-mono);
             font-size: clamp(0.65rem, 0.75vw, 0.75rem);
             font-weight: 400;
             letter-spacing: 0.025em;
             line-height: 1.6;
             text-transform: uppercase;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            z-index: 1;
+            top: clamp(-8rem, -8vw, -3rem);
+            right: clamp(2rem, 12vw, 12rem);
+            width: clamp(12rem, 22vw, 22rem);
+            aspect-ratio: 1;
+            padding: 0;
+            border: 1px solid var(--ring);
+            border-radius: 50%;
+            background: transparent;
+            box-shadow:
+                0 0 0 clamp(1.5rem, 3vw, 3rem) var(--ring-soft),
+                0 0 0 clamp(3rem, 6vw, 6rem) var(--ring-faint);
+            cursor: pointer;
+            transition:
+                border-color 250ms ease,
+                transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--border-strong);
+            transform: scale(1.015);
+        }
+
+        .theme-toggle:focus-visible {
+            outline: 2px solid var(--foreground);
+            outline-offset: 4px;
         }
 
         .identity::before {
@@ -178,7 +245,7 @@
             overflow: hidden;
             padding: clamp(2rem, 4vw, 4rem);
             border-right: 1px solid var(--border);
-            background: rgba(9, 9, 11, 0.48);
+            background: var(--header-surface);
         }
 
         .project__header::before {
@@ -242,7 +309,7 @@
             border: 1px solid var(--border);
             border-radius: var(--radius);
             background: var(--surface);
-            box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, 0.28);
+            box-shadow: 0 1.5rem 5rem var(--card-shadow);
             animation: enter 750ms 100ms cubic-bezier(0.22, 1, 0.36, 1) both;
             transition:
                 border-color 250ms ease,
@@ -257,7 +324,7 @@
         .video-card:hover,
         .video-card:focus-within {
             border-color: var(--border-strong);
-            box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.44);
+            box-shadow: 0 2rem 6rem var(--card-shadow-hover);
             transform: translateY(-0.25rem);
         }
 
@@ -341,7 +408,7 @@
         .video-trigger:hover .play-control,
         .video-trigger:focus-visible .play-control {
             background: #09090b;
-            color: var(--foreground);
+            color: #f4f4f5;
             transform: scale(1.08);
         }
 
@@ -509,7 +576,7 @@
                 padding: 1rem;
             }
 
-            .masthead::before {
+            .theme-toggle {
                 top: -5rem;
                 right: -3rem;
             }
@@ -592,6 +659,7 @@
 <body>
     <div class="site-frame">
         <header class="masthead">
+            <button class="theme-toggle" type="button" aria-label="Cambiar tema" aria-pressed="false"></button>
             <div class="masthead__rail">
                 <p class="identity">Profesor: DAVID SANTIAGO ALARCON GARCIA</p>
                 <p class="identity">Alumno: LUIS FELIPE FERNANDEZ GURROLA</p>
@@ -653,6 +721,53 @@
     </div>
 
     <script>
+        const root = document.documentElement;
+        const themeToggle = document.querySelector(".theme-toggle");
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+        function applyTheme(theme) {
+            root.dataset.theme = theme;
+            localStorage.setItem("ebc-theme", theme);
+            themeToggle.setAttribute("aria-pressed", String(theme === "light"));
+        }
+
+        themeToggle.setAttribute("aria-pressed", String(root.dataset.theme === "light"));
+
+        themeToggle.addEventListener("click", (event) => {
+            const nextTheme = root.dataset.theme === "light" ? "dark" : "light";
+
+            if (!document.startViewTransition || reduceMotion.matches) {
+                applyTheme(nextTheme);
+                return;
+            }
+
+            const bounds = event.currentTarget.getBoundingClientRect();
+            const x = bounds.left + bounds.width / 2;
+            const y = bounds.top + bounds.height / 2;
+            const radius = Math.hypot(
+                Math.max(x, window.innerWidth - x),
+                Math.max(y, window.innerHeight - y)
+            );
+            const transition = document.startViewTransition(() => applyTheme(nextTheme));
+
+            transition.ready.then(() => {
+                root.animate(
+                    {
+                        clipPath: [
+                            `circle(0px at ${x}px ${y}px)`,
+                            `circle(${radius}px at ${x}px ${y}px)`
+                        ]
+                    },
+                    {
+                        duration: 650,
+                        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+                        fill: "forwards",
+                        pseudoElement: "::view-transition-new(root)"
+                    }
+                );
+            });
+        });
+
         const modal = document.getElementById("videoModal");
         const videoFrame = document.getElementById("videoFrame");
         const closeButton = modal.querySelector(".video-modal__close");
