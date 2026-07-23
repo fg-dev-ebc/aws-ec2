@@ -9,8 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script>
-        document.documentElement.dataset.theme = localStorage.getItem("ebc-theme") ||
-            (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        document.documentElement.dataset.theme = "dark";
     </script>
     <style>
         :root {
@@ -709,7 +708,6 @@
 
         function applyTheme(theme) {
             root.dataset.theme = theme;
-            localStorage.setItem("ebc-theme", theme);
             themeToggle.setAttribute("aria-pressed", String(theme === "light"));
         }
 
