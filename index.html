@@ -258,6 +258,11 @@
             opacity: 0.55;
         }
 
+        .project--commands .project__header {
+            align-items: flex-start;
+            padding-top: clamp(4rem, 7vw, 7rem);
+        }
+
         .project__heading {
             position: relative;
             z-index: 1;
@@ -405,6 +410,134 @@
             letter-spacing: -0.035em;
             line-height: 1.08;
             text-wrap: balance;
+        }
+
+        .commands {
+            width: 100%;
+            min-width: 0;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: 0 1.5rem 5rem var(--card-shadow);
+        }
+
+        .commands__title {
+            margin: 0;
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid var(--border);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .commands__list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: command;
+        }
+
+        .command {
+            display: grid;
+            grid-template-columns: 1.5rem minmax(0, 1fr) minmax(0, 1fr);
+            align-items: center;
+            column-gap: 0.4rem;
+            padding: 0.35rem 0.65rem;
+            counter-increment: command;
+        }
+
+        .command::before {
+            grid-column: 1;
+            grid-row: 1;
+            padding-top: 0.1rem;
+            color: var(--muted);
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            content: counter(command) ".";
+        }
+
+        .command > * {
+            min-width: 0;
+        }
+
+        .command + .command {
+            border-top: 1px solid var(--border);
+        }
+
+        .command__description {
+            display: grid;
+            grid-template-columns: 3rem minmax(0, 1fr);
+            align-items: center;
+            gap: 0.35rem;
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.72rem;
+            line-height: 1.3;
+        }
+
+        .command code {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+        }
+
+        .command__description code {
+            margin-right: 0;
+            color: var(--foreground);
+        }
+
+        .command__terminal {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.15rem 0.4rem;
+            border: 0;
+            border-radius: 0.25rem;
+            background: var(--surface-raised);
+        }
+
+        .command__terminal::before {
+            color: var(--muted);
+            font-family: var(--font-mono);
+            content: "$";
+        }
+
+        .command__terminal code {
+            min-width: 0;
+            flex: 1;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        .command__copy {
+            flex-shrink: 0;
+            padding: 0.2rem 0.4rem;
+            border: 1px solid var(--border);
+            border-radius: 0.3rem;
+            background: var(--surface);
+            font-size: 0.65rem;
+            cursor: pointer;
+        }
+
+        .command__copy:hover {
+            border-color: var(--border-strong);
+        }
+
+        .command__copy svg {
+            display: block;
+            width: 0.85rem;
+            height: 0.85rem;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .command__copy:focus-visible {
+            outline: 2px solid var(--foreground);
+            outline-offset: 3px;
         }
 
         .video-modal {
@@ -648,6 +781,71 @@
         </header>
 
         <main>
+            <article class="project project--commands">
+                <header class="project__header">
+                    <h2 class="project__heading">Arquitectura en la Nube II</h2>
+                </header>
+
+                <div class="project__body">
+                    <section class="commands" aria-labelledby="commands-title">
+                        <h3 id="commands-title" class="commands__title">Terminal / Comandos Linux</h3>
+                        <ol class="commands__list" role="list">
+                            <li class="command">
+                                <p class="command__description"><code>pwd</code> Mostrar la ruta del directorio actual</p>
+                                <div class="command__terminal"><code>pwd</code><button class="command__copy" type="button" aria-label="Copiar ejemplo de pwd" aria-live="polite">Copiar</button></div>
+                            </li>
+                            <li class="command">
+                                <p class="command__description"><code>cd</code> Cambiar de directorio</p>
+                                <div class="command__terminal"><code>cd ~/Downloads</code><button class="command__copy" type="button" aria-label="Copiar ejemplo de cd" aria-live="polite">Copiar</button></div>
+                            </li>
+                            <li class="command">
+                                <p class="command__description"><code>ls</code> Listar archivos/directorios</p>
+                                <div class="command__terminal"><code>ls</code><button class="command__copy" type="button" aria-label="Copiar ejemplo de ls" aria-live="polite">Copiar</button></div>
+                            </li>
+                            <li class="command">
+                                <p class="command__description"><code>cat</code> Mostrar el contenido de un archivo</p>
+                                <div class="command__terminal"><code>cat archivo.json</code><button class="command__copy" type="button" aria-label="Copiar ejemplo de cat" aria-live="polite">Copiar</button></div>
+                            </li>
+                            <li class="command">
+                                <p class="command__description"><code>rm</code> Eliminar archivos</p>
+                                <div class="command__terminal"><code>rm archivo</code><button class="command__copy" type="button" aria-label="Copiar ejemplo de rm" aria-live="polite">Copiar</button></div>
+                            </li>
+                            <li class="command">
+                                <p class="command__description"><code>ssh</code> Conectarse remotamente a otro servidor</p>
+                                <div class="command__terminal"><code>ssh -i labsuser.pem ec2-user@&lt;IP&gt;</code><button class="command__copy" type="button" aria-label="Copiar ejemplo de ssh" aria-live="polite">Copiar</button></div>
+                            </li>
+                            <li class="command">
+                                <p class="command__description"><code>exit</code> Cerrar una sesión/shell</p>
+                                <div class="command__terminal"><code>exit</code><button class="command__copy" type="button" aria-label="Copiar ejemplo de exit" aria-live="polite">Copiar</button></div>
+                            </li>
+                            <li class="command">
+                                <p class="command__description"><code>curl</code> Hacer peticiones HTTP</p>
+                                <div class="command__terminal"><code>curl http://169.254.169.254/...</code><button class="command__copy" type="button" aria-label="Copiar ejemplo de curl" aria-live="polite">Copiar</button></div>
+                            </li>
+                            <li class="command">
+                                <p class="command__description"><code>grep</code> Buscar texto o patrones</p>
+                                <div class="command__terminal"><code>grep REJECT archivo.log</code><button class="command__copy" type="button" aria-label="Copiar ejemplo de grep" aria-live="polite">Copiar</button></div>
+                            </li>
+                            <li class="command">
+                                <p class="command__description"><code>nano</code> Editor de texto</p>
+                                <div class="command__terminal"><code>nano script.sh</code><button class="command__copy" type="button" aria-label="Copiar ejemplo de nano" aria-live="polite">Copiar</button></div>
+                            </li>
+                            <li class="command">
+                                <p class="command__description"><code>vim</code> Editor de texto</p>
+                                <div class="command__terminal"><code>sudo vi /etc/ssh/sshd_config</code><button class="command__copy" type="button" aria-label="Copiar ejemplo de vim" aria-live="polite">Copiar</button></div>
+                            </li>
+                            <li class="command">
+                                <p class="command__description"><code>echo</code> Imprimir texto o variables</p>
+                                <div class="command__terminal"><code>echo $sgId</code><button class="command__copy" type="button" aria-label="Copiar ejemplo de echo" aria-live="polite">Copiar</button></div>
+                            </li>
+                            <li class="command">
+                                <p class="command__description"><code>sudo</code> Ejecutar algo con privilegios elevados</p>
+                                <div class="command__terminal"><code>sudo yum install ...</code><button class="command__copy" type="button" aria-label="Copiar ejemplo de sudo" aria-live="polite">Copiar</button></div>
+                            </li>
+                        </ol>
+                    </section>
+                </div>
+            </article>
             <article class="project">
                 <header class="project__header">
                     <h2 class="project__heading">Arquitectura en la Nube I</h2>
@@ -745,6 +943,61 @@
                         pseudoElement: "::view-transition-new(root)"
                     }
                 );
+            });
+        });
+
+        async function copyCommand(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return;
+            } catch {
+                const field = document.createElement("textarea");
+                const focusedElement = document.activeElement;
+                field.value = text;
+                field.style.position = "fixed";
+                field.style.opacity = "0";
+                document.body.appendChild(field);
+                field.select();
+
+                try {
+                    if (!document.execCommand("copy")) throw new Error("No se pudo copiar");
+                } finally {
+                    field.remove();
+                    focusedElement?.focus({ preventScroll: true });
+                }
+            }
+        }
+
+        document.querySelectorAll(".command__copy").forEach((button) => {
+            let resetTimer;
+            const label = button.getAttribute("aria-label");
+            const copyIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg>';
+            const copiedIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>';
+            const errorIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v6m0 4h.01"></path></svg>';
+            button.innerHTML = copyIcon;
+            button.title = label;
+
+            button.addEventListener("click", async () => {
+                clearTimeout(resetTimer);
+                button.disabled = true;
+
+                try {
+                    await copyCommand(button.parentElement.querySelector("code").textContent);
+                    button.innerHTML = copiedIcon;
+                    button.title = "Comando copiado";
+                    button.setAttribute("aria-label", "Comando copiado");
+                } catch {
+                    button.innerHTML = errorIcon;
+                    button.title = "No se pudo copiar. Reintentar";
+                    button.setAttribute("aria-label", "No se pudo copiar. Reintentar");
+                } finally {
+                    button.disabled = false;
+                    resetTimer = setTimeout(() => {
+                        button.innerHTML = copyIcon;
+                        button.title = label;
+                        button.setAttribute("aria-label", label);
+                    }, 2000);
+                }
             });
         });
 
